@@ -9,35 +9,53 @@
 Official source code, experimental reproducibility suite, and benchmark evaluation for **Group 10 (G10)** — Digital Assignment II (DA-2):
 * **Course:** AI and Machine Learning for IC Design (BEVD402L) | Slot: D1+TD1
 * **Faculty Supervisor:** Dr. G. Lakshmi Priya
-* **Institution:** School of Electronics Engineering (SENSE), Vellore Institute of Technology, Chennai
+* **Institution:** School of Electronics Engineering (SENSE), Vellore Institute of Technology (VIT), Chennai
 
 ---
 
-## 👥 Group 10 Team Members & Work Allocation
+## 📌 1. Project Overview & Common Research Context
+
+Lithography hotspot detection identifies layout topology clips susceptible to manufacturing printability defects (such as open circuit line-end pinching or short circuit line bridging) during photolithographic wafer processing. As semiconductor technology nodes shrink below 20nm, the mismatch between lithography laser wavelength (193nm) and nanometer feature sizes causes optical diffraction effects, degrading chip yield.
+
+### The ICCAD-12 Benchmark Suite
+Introduced in the **2012 IEEE/ACM International Conference on Computer-Aided Design (ICCAD)** CAD Contest, the ICCAD-12 suite contains five distinct benchmark layout datasets (B1 to B5). The dataset is characterized by severe class imbalance where hotspot patterns (HS) are heavily outnumbered by non-hotspot patterns (NHS) (e.g., Benchmark 5 test set contains only 41 hotspots out of 19,368 total clips, representing a $0.21\%$ hotspot prevalence).
+
+### Standard Accuracy Fallacy
+Under such extreme class imbalance, standard accuracy is misleading: a trivial classifier predicting 100% Non-Hotspot scores over **99% standard accuracy** while achieving **0% Hotspot Recall**. Therefore, **Balanced Accuracy (BA)** is mandated as the primary quality metric:
+$$\text{Balanced Accuracy (BA)} = \frac{\text{Sensitivity (Recall)} + \text{Specificity}}{2}$$
+
+---
+
+## 👥 2. Group 10 Team Members & Work Allocation
 
 | Reg. No. | Student Name | Role / Key Module Contribution | Contribution % |
 | :---: | :--- | :--- | :---: |
 | **23BVD1062** | Vinayak Shreenivas Salunke | Dataset Preprocessing, BCE & Focal Loss Baseline Execution, Result Aggregation | **33.3%** |
 | **23BVD1064** | Harsh Vardhan Singh | OHEM Architecture Formulation, IEEE Report Writing, Discussion & Limitation Analysis | **33.3%** |
-| **23BVD1065** | Alavala Vishnu Koushik Reddy | Confusion Matrix Heatmaps, Comparative Plot Generation, Slide Deck Preparation | **33.3%** |
+| **23BVD1065** | Alavala Vishnu Koushik Reddy | Confusion Matrix Heatmaps, Comparative Plot Generation, Presentation Deck Preparation | **33.3%** |
 
 ---
 
-## 📌 Executive Summary & Research Context
+## 🎯 3. Group 10 Research Questions, Hypotheses & Mandate Verification
 
-Lithography hotspot detection identifies layout topology clips susceptible to manufacturing defects (open circuit line-end pinching or short circuit line bridging) during photolithographic semiconductor fabrication. In the industry-standard **ICCAD-12 benchmark suite**, non-hotspot patterns vastly outnumber hotspot patterns (e.g., Benchmark 5 test set contains only 41 hotspots out of 19,368 clips, i.e., $0.21\%$ hotspot prevalence).
+### Research Questions
+* **RQ1:** Does Focal Loss improve hotspot detection reliability compared with standard Binary Cross-Entropy (BCE) training across all five ICCAD-12 benchmarks?
+* **RQ2:** Does explicit Online Hard Example Mining (OHEM) provide additive benefit over Focal Loss alone or when combined with Focal Loss?
 
-### Core Research Question (RQ)
-> *"Can a learning strategy emphasizing difficult and minority samples improve lithography hotspot detection reliability under extreme class imbalance without adding CNN model complexity?"*
+### Hypotheses
+* **H1:** Focal Loss will improve balanced accuracy and minority-class recall relative to BCE because easy non-hotspot samples contribute negligible loss gradients during backpropagation.
+* **H2:** Combining Focal Loss with OHEM may provide complementary hard-example emphasis, though the effect depends on benchmark difficulty and precision-recall operating points.
 
-### Key Finding
-**YES.** Replacing standard Binary Cross-Entropy (BCE) loss with **Focal Loss** ($\alpha=0.75, \gamma=2.0$) increases the five-benchmark arithmetic-mean **Balanced Accuracy from 82.78% to 93.02%** (+10.24 percentage points) and mean **Hotspot Recall from 86.73% to 96.45%** (+9.72 percentage points) while maintaining a lightweight CNN baseline of only **12,873 parameters** and **~6.3 ms/clip** inference latency.
+### Faculty Mandate Verification Summary
+* **✔ Research Question Answered:** YES. Focal Loss boosts 5-benchmark mean Balanced Accuracy from **82.78% to 93.02%** (+10.24 percentage points) and mean Hotspot Recall from **86.73% to 96.45%**.
+* **✔ Research Focus & Novelty Fulfilled:** Investigated training-level loss weighting (Focal Loss $\alpha=0.75, \gamma=2.0$) and mini-batch mining (OHEM top 50%) without changing network capacity or adding parameter overhead.
+* **✔ Minimum Expected Investigation Fulfilled:** Conducted a controlled BCE vs. Focal Loss comparison across all five benchmarks (B1–B5) and detailed minority sample error analysis (B4 missed hotspots reduced from 104 to 9; B5 false alarms reduced from 13,123 to 4,849).
 
 ---
 
-## 📊 Summary Performance Comparison Across ICCAD-12
+## 📊 4. Summary Performance Comparison Across ICCAD-12
 
-### 1. Overall Five-Benchmark Arithmetic Mean Metrics
+### A. Overall Five-Benchmark Arithmetic Mean Metrics
 
 | Primary Evaluation Metric | BCE Baseline (Mean) | Proposed Focal Loss (Mean) | Absolute Gain |
 | :--- | :---: | :---: | :---: |
@@ -47,7 +65,7 @@ Lithography hotspot detection identifies layout topology clips susceptible to ma
 | **Precision** | **27.07%** | **31.96%** | **+4.89 pp** |
 | **F1-Score** | **36.88%** | **42.58%** | **+5.70 pp** |
 
-### 2. Benchmark-Wise Test Performance (B1 to B5)
+### B. Benchmark-Wise Test Performance (B1 to B5)
 
 | Benchmark | Training Method | Balanced Accuracy (%) | Precision (%) | Recall (%) | Specificity (%) | F1-Score (%) |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -62,7 +80,7 @@ Lithography hotspot detection identifies layout topology clips susceptible to ma
 | **B5** | BCE Baseline | 64.83% | 0.30% | **97.56%** | 32.10% | 0.61% |
 | **B5** | **Focal Loss (α=0.75, γ=2)** | **86.24%** | **0.82%** | **97.56%** | **74.91%** | **1.62%** |
 
-### 3. Ablation Study: Online Hard Example Mining (OHEM) on B4 & B5
+### C. Ablation Study: Online Hard Example Mining (OHEM) on B4 & B5
 
 | Benchmark | Loss & Sampling Strategy | Balanced Accuracy (%) | Precision (%) | Recall (%) | F1-Score (%) |
 | :---: | :--- | :---: | :---: | :---: | :---: |
@@ -77,75 +95,81 @@ Lithography hotspot detection identifies layout topology clips susceptible to ma
 
 ---
 
-## 🏗️ Model Architecture & Mathematical Loss Formulations
+## 🏗️ 5. Model Architecture & Mathematical Loss Formulations
 
-### 1. Lightweight CNN Architecture (~12,873 Parameters)
+### Lightweight CNN Architecture (~12,873 Parameters)
 ```text
-Input Clip (64x64x1 Grayscale)
+Input Clip Image (64x64x1 Grayscale)
   │
-  ├── Block 1: Conv2D(3x3, 12) ──> ELU ──> Conv2D(3x3, 12) ──> ELU ──> Conv2D(3x3, 12) ──> BatchNorm ──> ELU ──> MaxPool(2x2)
+  ├── Basic Block 1:
+  │     Conv2D (3x3 kernel, 12 channels, ELU activation)
+  │     Conv2D (3x3 kernel, 12 channels, ELU activation)
+  │     Conv2D (3x3 kernel, 12 channels) ──> BatchNorm ──> ELU ──> MaxPool2D(2x2)
   │
-  ├── Block 2: Conv2D(3x3, 12) ──> ELU ──> Conv2D(3x3, 12) ──> ELU ──> Conv2D(3x3, 12) ──> BatchNorm ──> ELU ──> MaxPool(2x2)
+  ├── Basic Block 2:
+  │     Conv2D (3x3 kernel, 12 channels, ELU activation)
+  │     Conv2D (3x3 kernel, 12 channels, ELU activation)
+  │     Conv2D (3x3 kernel, 12 channels) ──> BatchNorm ──> ELU ──> MaxPool2D(2x2)
   │
-  ├── Dropout (p = 0.30)
+  ├── Flatten ──> Dropout (rate = 0.30)
   ├── Fully Connected Layer (10 units, ELU activation)
-  └── FC Output Layer (1 unit, Sigmoid activation) ──> Probability p
+  └── FC Output Layer (1 unit, Sigmoid activation) ──> Predicted Probability p
 ```
 
-### 2. Loss Formulations
-* **Binary Cross-Entropy (BCE):**
+### Mathematical Formulations
+* **Binary Cross-Entropy (BCE) Baseline Loss:**
   $$\mathcal{L}_{\text{BCE}} = - \big[ y \log(p) + (1-y) \log(1-p) \big]$$
 * **Focal Loss ($\alpha=0.75, \gamma=2.0$):**
   $$\mathcal{L}_{\text{Focal}} = - \alpha_t (1 - p_t)^\gamma \log(p_t)$$
   *where $p_t = p$ for positive hotspot samples, and $p_t = 1 - p$ for non-hotspot samples.*
 * **Online Hard Example Mining (OHEM):**
-  Computes per-sample losses across mini-batch size $N=128$, ranks magnitudes, and backpropagates gradients using **only the top 50% highest-loss samples**.
+  Computes per-sample losses across batch size $N=128$, ranks loss magnitudes, and backpropagates gradients using **only the top 50% highest-loss samples**.
 
 ---
 
-## 📁 Repository Directory Structure
+## 📁 6. Repository Directory Structure & Checkpoint Map
 
 ```text
 FINAL G10_DA2_COMPLETE_BACKUP/
 ├── checkpoints/                        # Model weights checkpoints (.pt)
-│   ├── b1_bce.pt, b1_focal.pt
-│   ├── b2_bce.pt, b2_focal.pt
-│   ├── b3_bce.pt, b3_focal.pt
-│   ├── b4_bce.pt, b4_focal.pt, b4_ohem.pt, b4_focal_ohem.pt
-│   └── b5_bce.pt, b5_focal.pt, b5_ohem.pt, b5_focal_ohem.pt
-├── plots/                              # Comparative graphics & confusion matrix heatmaps
+│   ├── b1_bce.pt, b1_focal.pt          # Benchmark 1 trained weights
+│   ├── b2_bce.pt, b2_focal.pt          # Benchmark 2 trained weights
+│   ├── b3_bce.pt, b3_focal.pt          # Benchmark 3 trained weights
+│   ├── b4_bce.pt, b4_focal.pt          # Benchmark 4 trained weights
+│   ├── b4_ohem.pt, b4_focal_ohem.pt    # Benchmark 4 OHEM ablation weights
+│   ├── b5_bce.pt, b5_focal.pt          # Benchmark 5 trained weights
+│   └── b5_ohem.pt, b5_focal_ohem.pt    # Benchmark 5 OHEM ablation weights
+├── plots/                              # Visualization graphics & confusion matrix heatmaps
 │   ├── B1_Balanced_Accuracy.png ... B5_Balanced_Accuracy.png
 │   ├── average_Balanced_Accuracy.png ... average_F1.png
 │   └── confusion_matrices_b4_b5.png
 ├── train_g10.py                        # Main BCE & Focal Loss training script (B1–B5)
 ├── train_g10_ohem.py                   # OHEM & Focal+OHEM training script
-├── evaluate_g10.py                     # Evaluation script for BCE & Focal Loss checkpoints
-├── evaluate_g10_ohem.py                # Evaluation script for OHEM checkpoints
-├── consolidate_results.py              # Metric consolidation script
-├── generate_plots.py                   # Plotting script for accuracy/recall/precision charts
+├── evaluate_g10.py                     # Test set evaluation script for BCE & Focal Loss
+├── evaluate_g10_ohem.py                # Test set evaluation script for OHEM variants
+├── consolidate_results.py              # Metric aggregation & CSV/JSON consolidation script
+├── generate_plots.py                   # Comparative metric bar chart generator
 ├── generate_confusion_matrices.py      # Confusion matrix heatmap generator
 ├── generate_analysis.py                # Statistical metric analysis generator
-├── results_all_experiments.csv         # Tabular result CSV dump (raw counts & metrics)
-├── G10_all_results.json                # JSON result file
+├── results_all_experiments.csv         # Consolidated raw counts & evaluation metrics CSV
+├── G10_all_results.json                # Structured JSON result file
 ├── requirements.txt                    # Python environment requirements
 └── README.md                           # Documentation & execution instructions
 ```
 
 ---
 
-## 🚀 Execution & Reproducibility Guide
+## 🚀 7. Execution & Reproducibility Guide
 
-### 1. Installation
-
-Ensure Python 3.8+ and PyTorch are installed:
+### Step 1: Environment Setup & Prerequisites
+Ensure Python 3.8+ and PyTorch are installed. A GPU is recommended for faster execution but CPU inference is fully supported:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Dataset Layout Setup
-
-Organize the official ICCAD-12 benchmarks as follows:
+### Step 2: Dataset Directory Setup
+Organize the official ICCAD-12 benchmarks as follows (do NOT merge the benchmark folders):
 
 ```text
 iccad-official/
@@ -154,35 +178,34 @@ iccad-official/
   │   └── test/  (test_hs/*.png, test_nhs/*.png)
   ├── iccad2/ ... iccad5/
 ```
+*Note: The ICCAD-12 dataset is not redistributed in this repository. Obtain the benchmark through course-provided resources.*
 
-### 3. Training Commands
-
-To train Baseline BCE or Focal Loss on Benchmark 1 to 5:
+### Step 3: Training Commands
+To train Baseline BCE or Proposed Focal Loss on Benchmarks 1 through 5:
 
 ```bash
-# Baseline BCE Training (Benchmark 1)
+# Train Baseline BCE (Benchmark 1)
 python train_g10.py --root /path/to/iccad-official --benchmark 1 --mode bce --epochs 5
 
-# Proposed Focal Loss Training (Benchmark 1)
+# Train Proposed Focal Loss (Benchmark 1)
 python train_g10.py --root /path/to/iccad-official --benchmark 1 --mode focal --epochs 5
 ```
 
-To run OHEM experiments on Benchmark 4 or 5:
+To run OHEM ablation experiments on Benchmark 4 or 5:
 
 ```bash
 python train_g10_ohem.py --root /path/to/iccad-official --benchmark 4 --mode ohem --epochs 5
 python train_g10_ohem.py --root /path/to/iccad-official --benchmark 4 --mode focal_ohem --epochs 5
 ```
 
-### 4. Evaluation Commands
-
-Evaluate a saved checkpoint on the official untouched test set:
+### Step 4: Evaluation Commands
+To evaluate a trained checkpoint on the official untouched test set:
 
 ```bash
 python evaluate_g10.py --root /path/to/iccad-official --benchmark 1 --checkpoint checkpoints/b1_focal.pt
 ```
 
-To regenerate all comparative plots and confusion matrix graphics:
+To regenerate all comparative bar charts and confusion matrix heatmaps:
 
 ```bash
 python generate_plots.py
@@ -191,25 +214,25 @@ python generate_confusion_matrices.py
 
 ---
 
-## ⚠️ Reproducibility Caveat & Limitations
+## ⚠️ 8. Reproducibility Caveats & Technical Limitations
 
-1. **OHEM Split Enumeration:** `train_g10_ohem.py` uses a separate file enumeration order compared to `train_g10.py`. While both scripts use the same random seed (42), stratification rules, $64\times 64$ grayscale preprocessing, CNN architecture, and Nadam optimizer, the individual train/validation image assignments differ slightly between OHEM and BCE/Focal runs.
-2. **Fixed Sigmoid Threshold:** All predictions use a static $0.50$ decision threshold. Benchmark-specific threshold calibration on PR validation curves remains a recommendation for future research.
-3. **Training Budget:** Model budget was fixed at 5 epochs as specified by the baseline assignment setup.
+1. **OHEM File Enumeration Order:** `train_g10_ohem.py` uses a separate file-enumeration order compared to `train_g10.py`. While both scripts maintain identical random seed (42), stratification rules, $64\times 64$ grayscale preprocessing, CNN architecture, and Nadam optimizer, the individual train/validation file splits differ slightly between OHEM and BCE/Focal runs.
+2. **Fixed Decision Threshold:** Predictions use a fixed sigmoid threshold of $0.50$. Benchmark-specific threshold calibration on validation PR-curves remains a recommendation for future research.
+3. **Hyperparameter Sweeps:** The primary Focal Loss experiment uses fixed $\alpha=0.75, \gamma=2.0$, and OHEM hard fraction $0.50$. Systematic parameter sweeps were beyond the 5-epoch fixed baseline budget.
 
 ---
 
-## 📚 References & Literature Survey
+## 📚 9. Literature References & Academic Citations
 
 1. V. Borisov and J. Scheible, *"Lithography Hotspots Detection Using Deep Learning,"* Proc. 15th SMACD, 2018, pp. 145–148.
 2. H. Yang, Y. Lin, B. Yu, and E. F. Y. Young, *"Lithography hotspot detection: From shallow to deep learning,"* Proc. IEEE SOCC, 2017, pp. 233–238.
 3. L. Liao, S. Li, Y. Che, W. Shi, and X. Wang, *"Lithography Hotspot Detection Method Based on Transfer Learning Using Pre-Trained Deep Convolutional Neural Network,"* Applied Sciences, vol. 12, no. 4, 2192, 2022.
 4. Y. Chen et al., *"Lightweight Hotspot Detection Model Fusing SE and ECA Mechanisms,"* Micromachines, vol. 15, no. 10, 1217, 2024.
-5. T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollár, *"Focal Loss for Dense Object Detection,"* Proc. IEEE ICCV, 2017, pp. 2980–2988.
-6. A. Shrivastava, A. Gupta, and R. Girshick, *"Training Region-Based Object Detectors With Online Hard Example Mining,"* Proc. IEEE CVPR, 2016, pp. 761–769.
+5. M. Lin et al., *"An Improved YOLOv5 Model for Lithographic Hotspot Detection,"* Micromachines, vol. 16, no. 5, 568, 2025.
+6. T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollár, *"Focal Loss for Dense Object Detection,"* Proc. IEEE ICCV, 2017, pp. 2980–2988.
+7. A. Shrivastava, A. Gupta, and R. Girshick, *"Training Region-Based Object Detectors With Online Hard Example Mining,"* Proc. IEEE CVPR, 2016, pp. 761–769.
 
 ---
 
-## 📜 License
-
-This codebase and reproducibility suite are released under the MIT License for academic research purposes.
+## 📜 10. Academic Integrity & License
+This repository is released under the **MIT License**. All experimental code, preprocessing pipelines, and evaluation metrics were developed independently by Group 10 in accordance with course academic integrity guidelines.
