@@ -1,0 +1,18 @@
+{
+  "TN": 6204,
+  "FP": 13123,
+  "FN": 1,
+  "TP": 40,
+  "balanced_accuracy": 0.6483057317767258,
+  "precision": 0.003038820937476259,
+  "recall": 0.975609756097561,
+  "specificity": 0.32100170745589074,
+  "f1": 0.006058770069675856,
+  "benchmark": 5,
+  "mode": "bce",
+  "best_epoch": 5,
+  "val_balanced_accuracy": 0.6663602941176471,
+  "test_samples": 19368,
+  "inference_seconds": 187.4921395778656,
+  "inference_ms_per_sample": 9.680511179860591
+}

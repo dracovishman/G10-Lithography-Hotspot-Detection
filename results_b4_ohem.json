@@ -1,0 +1,19 @@
+{
+  "TN": 31660,
+  "FP": 230,
+  "FN": 67,
+  "TP": 110,
+  "balanced_accuracy": 0.8071283171495236,
+  "precision": 0.3235294117647059,
+  "recall": 0.6214689265536724,
+  "specificity": 0.9927877077453747,
+  "f1": 0.4255319148936171,
+  "benchmark": 4,
+  "mode": "ohem",
+  "best_epoch": 5,
+  "val_balanced_accuracy": 0.8124224703172072,
+  "hard_fraction": 0.5,
+  "test_samples": 32067,
+  "inference_seconds": 232.47044849395752,
+  "inference_ms_per_sample": 7.249522827017105
+}

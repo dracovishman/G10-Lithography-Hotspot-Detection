@@ -1,0 +1,62 @@
+G10 LITHOGRAPHY HOTSPOT DETECTION — EXPERIMENT ANALYSIS
+======================================================================
+
+BENCHMARK 1
+----------------------------------------------------------------------
+BCE: BA=83.16%, Precision=12.94%, Recall=98.23%, Specificity=68.09%, F1=22.87%, TN=3186, FP=1493, FN=4, TP=222
+Focal Loss: BA=87.28%, Precision=17.77%, Recall=96.02%, Specificity=78.54%, F1=29.99%, TN=3675, FP=1004, FN=9, TP=217
+
+BENCHMARK 2
+----------------------------------------------------------------------
+BCE: BA=98.92%, Precision=46.96%, Recall=99.20%, Specificity=98.65%, F1=63.74%, TN=40740, FP=558, FN=4, TP=494
+Focal Loss: BA=98.15%, Precision=63.22%, Recall=96.99%, Specificity=99.32%, F1=76.55%, TN=41017, FP=281, FN=15, TP=483
+
+BENCHMARK 3
+----------------------------------------------------------------------
+BCE: BA=96.71%, Precision=48.81%, Recall=97.40%, Specificity=96.01%, F1=65.03%, TN=44486, FP=1847, FN=47, TP=1761
+Focal Loss: BA=97.10%, Precision=59.38%, Recall=96.79%, Specificity=97.42%, F1=73.61%, TN=45136, FP=1197, FN=58, TP=1750
+
+BENCHMARK 4
+----------------------------------------------------------------------
+BCE: BA=70.30%, Precision=26.35%, Recall=41.24%, Specificity=99.36%, F1=32.16%, TN=31686, FP=204, FN=104, TP=73
+Focal Loss: BA=96.31%, Precision=18.60%, Recall=94.92%, Specificity=97.70%, F1=31.11%, TN=31155, FP=735, FN=9, TP=168
+OHEM: BA=80.71%, Precision=32.35%, Recall=62.15%, Specificity=99.28%, F1=42.55%, TN=31660, FP=230, FN=67, TP=110
+Focal + OHEM: BA=94.38%, Precision=23.39%, Recall=90.40%, Specificity=98.36%, F1=37.17%, TN=31366, FP=524, FN=17, TP=160
+
+BENCHMARK 5
+----------------------------------------------------------------------
+BCE: BA=64.83%, Precision=0.30%, Recall=97.56%, Specificity=32.10%, F1=0.61%, TN=6204, FP=13123, FN=1, TP=40
+Focal Loss: BA=86.24%, Precision=0.82%, Recall=97.56%, Specificity=74.91%, F1=1.62%, TN=14478, FP=4849, FN=1, TP=40
+OHEM: BA=64.51%, Precision=20.00%, Recall=29.27%, Specificity=99.75%, F1=23.76%, TN=19279, FP=48, FN=29, TP=12
+Focal + OHEM: BA=90.34%, Precision=1.21%, Recall=97.56%, Specificity=83.11%, F1=2.39%, TN=16063, FP=3264, FN=1, TP=40
+
+FIVE-BENCHMARK AVERAGES
+----------------------------------------------------------------------
+BCE: Balanced Accuracy=82.78%, Precision=27.07%, Recall=86.73%, Specificity=78.84%, F1=36.88%
+Focal Loss: Balanced Accuracy=93.02%, Precision=31.96%, Recall=96.45%, Specificity=89.58%, F1=42.58%
+Focal + OHEM: Balanced Accuracy=92.36%, Precision=12.30%, Recall=93.98%, Specificity=90.73%, F1=19.78%
+OHEM: Balanced Accuracy=72.61%, Precision=26.18%, Recall=45.71%, Specificity=99.52%, F1=33.16%
+
+FOCAL LOSS VS BCE
+----------------------------------------------------------------------
+Balanced Accuracy: +10.23 percentage points
+Precision: +4.89 percentage points
+Recall: +9.73 percentage points
+Specificity: +10.73 percentage points
+F1: +5.69 percentage points
+
+B4 BCE → FOCAL
+----------------------------------------------------------------------
+Balanced Accuracy: +26.00 pp
+Precision: -7.75 pp
+Recall: +53.67 pp
+Specificity: -1.67 pp
+F1: -1.05 pp
+
+B5 BCE → FOCAL
+----------------------------------------------------------------------
+Balanced Accuracy: +21.41 pp
+Precision: +0.51 pp
+Recall: +0.00 pp
+Specificity: +42.81 pp
+F1: +1.02 pp
